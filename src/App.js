@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import ExpenseForm from './ExpenseForm';
+import ExpenseList from './ExpenseList';
+import './App.css'; // Optional: Add basic styles
 
 function App() {
+  const [expenses, setExpenses] = useState([]); // Array of { id, description, amount, category }
+
+  const addExpense = (newExpense) => {
+    setExpenses([...expenses, { ...newExpense, id: Date.now() }]); // Simple unique ID
+  };
+
+  const deleteExpense = (id) => {
+    setExpenses(expenses.filter(exp => exp.id !== id));
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Personal Expense Tracker</h1>
+      <ExpenseForm onAddExpense={addExpense} />
+      <ExpenseList expenses={expenses} onDelete={deleteExpense} />
     </div>
   );
 }
